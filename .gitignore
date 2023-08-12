@@ -1,0 +1,12 @@
+env/
+logs/
+notebooks/
+artifact/
+.data-00000-of-00001
+.index
+checkpoint
+Face_To_BMI.egg-info/
+dist/
+build/
+
+
