@@ -41,11 +41,11 @@ def gen_frames():
         else:
             frame = cv2.flip(frame, 1)
             face_roi = detect_face(frame)
-            # if face_roi is not None:
-            #     # Make prediction on the face ROI
-            #     pred = pipeline.predict(face_roi)
-            #     # Draw prediction on the frame
-            #     cv2.putText(frame, f'Prediction: {pred}', (20, 40), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+            if face_roi is not None:
+                # Make prediction on the face ROI
+                pred = pipeline.predict(face_roi)
+                # Draw prediction on the frame
+                cv2.putText(frame, f'Prediction: {pred}', (20, 40), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
             ret, buffer = cv2.imencode('.jpg', frame)
             frame = buffer.tobytes()
             yield (b'--frame\r\n'
