@@ -1,5 +1,4 @@
 from flask import Flask, render_template, Response
-from flask_cors import CORS,cross_origin
 import cv2
 import pymongo
 from src.pipelines.prediction_pipeline import PredictPipeline
@@ -31,7 +30,6 @@ def detect_face(frame):
     return None
 
 @app.route('/')
-@cross_origin()
 def index():
     return render_template('home.html')
 
@@ -43,23 +41,21 @@ def gen_frames():
         else:
             frame = cv2.flip(frame, 1)
             face_roi = detect_face(frame)
-            if face_roi is not None:
-                # Make prediction on the face ROI
-                pred = pipeline.predict(face_roi)
-                # Draw prediction on the frame
-                cv2.putText(frame, f'Prediction: {pred}', (20, 40), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+            # if face_roi is not None:
+            #     # Make prediction on the face ROI
+            #     pred = pipeline.predict(face_roi)
+            #     # Draw prediction on the frame
+            #     cv2.putText(frame, f'Prediction: {pred}', (20, 40), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
             ret, buffer = cv2.imencode('.jpg', frame)
             frame = buffer.tobytes()
             yield (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
 @app.route('/video_feed')
-@cross_origin
 def video_feed():
     return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @app.route('/capture_image', methods=['POST'])
-@cross_origin
 def capture_image():
     frame = capture_frame()
     if frame is not None:
