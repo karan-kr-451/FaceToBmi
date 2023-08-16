@@ -1,15 +1,15 @@
 from flask import Flask, render_template, Response
 import cv2
-import pymongo
+# import pymongo
 from src.pipelines.prediction_pipeline import PredictPipeline
 
 
 app = Flask(__name__)
 camera = cv2.VideoCapture(0)
 pipeline = PredictPipeline()
-client = pymongo.MongoClient("mongodb+srv://karan:Tharki@cluster0.gfvk9lg.mongodb.net/?retryWrites=true&w=majority")
-db = client['Face_Data']
-user_collection = db['users']
+# client = pymongo.MongoClient("mongodb+srv://karan:Tharki@cluster0.gfvk9lg.mongodb.net/?retryWrites=true&w=majority")
+# db = client['Face_Data']
+# user_collection = db['users']
 
 
 def capture_frame():
@@ -66,11 +66,11 @@ def capture_image():
             pred = pred.item()
             print(pred)
 
-            user_data = {
-                'face_data' : 'captured_face.jpg',
-                'bmi_prediction': pred
-            }
-            user_collection.insert_one(user_data)
+            # user_data = {
+            #     'face_data' : 'captured_face.jpg',
+            #     'bmi_prediction': pred
+            # }
+            # user_collection.insert_one(user_data)
 
             return {'prediction': str(pred)}
         else:
