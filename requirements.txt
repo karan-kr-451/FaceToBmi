@@ -1,11 +1,11 @@
-pandas
-scipy
+tensorflow-intel
 tensorflow
 scikit-learn
-numpy
 opencv-python
 Flask
+colorama
 Pillow
+pymongo
 
 
 -e .

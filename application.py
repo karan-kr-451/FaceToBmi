@@ -1,15 +1,15 @@
 from flask import Flask, render_template, Response
 import cv2
-# import pymongo
+import pymongo
 from src.pipelines.prediction_pipeline import PredictPipeline
 
 
 app = Flask(__name__)
 camera = cv2.VideoCapture(0)
 pipeline = PredictPipeline()
-# client = pymongo.MongoClient("mongodb+srv://karan:Tharki@cluster0.gfvk9lg.mongodb.net/?retryWrites=true&w=majority")
-# db = client['Face_Data']
-# user_collection = db['users']
+client = pymongo.MongoClient("mongodb+srv://karan:Tharki@cluster0.gfvk9lg.mongodb.net/?retryWrites=true&w=majority")
+db = client['Face_Data']
+user_collection = db['users']
 
 
 def capture_frame():
@@ -41,11 +41,11 @@ def gen_frames():
         else:
             frame = cv2.flip(frame, 1)
             face_roi = detect_face(frame)
-            if face_roi is not None:
-                # Make prediction on the face ROI
-                pred = pipeline.predict(face_roi)
-                # Draw prediction on the frame
-                cv2.putText(frame, f'Prediction: {pred}', (20, 40), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+            # if face_roi is not None:
+            #     # Make prediction on the face ROI
+            #     pred = pipeline.predict(face_roi)
+            #     # Draw prediction on the frame
+            #     cv2.putText(frame, f'Prediction: {pred}', (20, 40), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
             ret, buffer = cv2.imencode('.jpg', frame)
             frame = buffer.tobytes()
             yield (b'--frame\r\n'
@@ -66,11 +66,11 @@ def capture_image():
             pred = pred.item()
             print(pred)
 
-            # user_data = {
-            #     'face_data' : 'captured_face.jpg',
-            #     'bmi_prediction': pred
-            # }
-            # user_collection.insert_one(user_data)
+            user_data = {
+                'face_data' : 'captured_face.jpg',
+                'bmi_prediction': pred
+            }
+            user_collection.insert_one(user_data)
 
             return {'prediction': str(pred)}
         else:
@@ -80,4 +80,4 @@ def capture_image():
 
 if __name__ == "__main__":
     
-    app.run(host="0.0.0.0")
+    app.run(host='0.0.0.0', port=8000)
