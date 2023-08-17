@@ -2,7 +2,7 @@ tensorflow-intel
 tensorflow
 scikit-learn
 opencv-python
-Flask
+flask
 colorama
 Pillow
 pymongo
