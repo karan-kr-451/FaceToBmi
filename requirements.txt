@@ -3,6 +3,10 @@ tensorflow
 scikit-learn
 opencv-python
 flask
+<<<<<<< HEAD
+=======
+colorama
+>>>>>>> 584fdb122415c2f962a0f15ea4744d4b46bbcc85
 Pillow
 pymongo
 
