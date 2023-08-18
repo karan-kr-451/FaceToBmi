@@ -11,7 +11,6 @@ client = pymongo.MongoClient("mongodb+srv://karan:Tharki@cluster0.gfvk9lg.mongod
 db = client['Face_Data']
 user_collection = db['users']
 
-
 def capture_frame():
     success, frame = camera.read()
     if not success:
@@ -31,7 +30,7 @@ def detect_face(frame):
 
 @app.route('/')
 def index():
-    return render_template('home.html')
+    return render_template('default.html')
 
 def gen_frames():
     while True:
@@ -80,4 +79,4 @@ def capture_image():
 
 if __name__ == "__main__":
     
-    app.run(host='0.0.0.0', port=8000)
+    app.run(host='0.0.0.0',port=8000)
